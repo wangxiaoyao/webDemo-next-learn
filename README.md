@@ -31,7 +31,7 @@ webDemo-next-learn/										# 文件夹统一使用：kebab-case
     │       ├── layout.js
     │       └── page.js               # 默认页面导出：Page命名。如下
     │       └── components						 # 文件夹
-    │           └── DashboardStatus.js # 组件命名：不论是组件文件夹名还是文件名都是：大驼峰（PascalCase）
+    │           └── DashboardStatus.js # 组件命名：不论是组件文件夹名还是文件名都是：大驼峰（PascalCase）非nextjs框架，页面级同此且使用index.tsx
                                        # DashboardStatus文件夹（当有内嵌子组件）
                                         /index.js
                                         /DashboardStatus.module.css																										              						/Other.js 子组件
