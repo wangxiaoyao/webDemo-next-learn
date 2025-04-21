@@ -12,6 +12,10 @@ export const AuthContext = createContext<AuthContextType>({
   setUsername: () => {},
 });
 
+/**
+ * thinking：写成 <AuthProvider>...</AuthProvider> 的时候，React 会执行 AuthProvider() 函数，并传入 { children }。
+ */
+
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   // 这里命名为：_setUsername
   const [username, _setUsername] = useState('wangxiaoyao');
