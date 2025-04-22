@@ -55,7 +55,8 @@ webDemo-next-learn/										# 文件夹统一使用：kebab-case
     │   └── AuthContext.js
     ├── types/                        # TS类型
     │   └── index.ts
-    ├── constants/                    # 常量
+    ├── constants/                    # 常量：统一导入index.ts
+    │   └── pages.ts                  # 页面层级的常量
     │   └── index.ts
 ├── public/                        # Static assets (images, fonts)
 ├── middleware.js                  # Next.js middleware (optional)
@@ -76,6 +77,14 @@ export default function Page() {
         </div>
     )
 }
+
+## constants
+├── api.ts           # API endpoints
+├── messages.ts      # 文案 / 提示语
+├── routes.ts/pages.ts # 页面定义
+├── roles.ts         # 用户角色权限定义
+├── index.ts         # 统一导出
+
 
 ## i18n
 src/
