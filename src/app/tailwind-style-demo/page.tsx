@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * flex-1 的布局
+ * 布局：flex-1
  */
 // export default function Page() {
 //   return (
@@ -22,63 +22,20 @@
 // }
 
 /**
- * 使用motion，动画效果
+ * motion
  */
-import { useState, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import MagicButtonMotion from './MagicButtonMotion';
+import StaggeredListMotion from './StaggeredListMotion';
+import ToggleBox from './ToogleBox';
+import FlipCardMotion from './FlipCardMotion';
 
 export default function Page() {
-  const [isPressing, setIsPressing] = useState(false);
-  const [showCopied, setShowCopied] = useState(false);
-  const timerRef = useRef(null);
-
-  const handleMouseDown = () => {
-    setIsPressing(true);
-    setShowCopied(false);
-  };
-
-  const handleMouseUp = () => {
-    setIsPressing(false);
-    setShowCopied(true);
-    clearTimeout(timerRef.current);
-    timerRef.current = setTimeout(() => {
-      setShowCopied(false);
-    }, 1500);
-  };
-
   return (
-    <div className="flex flex-col items-center justify-center">
-      <button
-        onMouseDown={handleMouseDown}
-        onMouseUp={handleMouseUp}
-        className="relative mt-20 h-10 w-20 overflow-hidden rounded-lg bg-amber-800 text-white active:scale-90"
-      >
-        点击冒泡
-        <AnimatePresence>
-          {isPressing && (
-            <motion.span
-              initial={{ scale: 0, opacity: 0.5 }}
-              animate={{ scale: 3, opacity: 0.9 }}
-              transition={{ duration: 1, ease: 'easeOut' }}
-              className="absolute inset-0 rounded-full bg-white"
-            />
-          )}
-        </AnimatePresence>
-      </button>
-
-      <AnimatePresence>
-        {showCopied && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.5 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0 }}
-            transition={{ duration: 0.3 }}
-            className="mt-4 rounded-lg bg-green-500 px-3 py-1 text-white shadow"
-          >
-            翻译已复制 ✅
-          </motion.div>
-        )}
-      </AnimatePresence>
+    <div className="flex w-full flex-col items-center justify-center gap-10">
+      <MagicButtonMotion />
+      <StaggeredListMotion items={['Item 1', 'Item 2', 'Item 3']} />
+      <ToggleBox />
+      <FlipCardMotion />
     </div>
   );
 }
