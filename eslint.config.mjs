@@ -5,14 +5,11 @@ import { FlatCompat } from '@eslint/eslintrc';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
+// 兼容老版本写法：FlatCompat
 const compat = new FlatCompat({
   baseDirectory: __dirname,
 });
 
-const eslintConfig = [
-  ...compat.extends('next/core-web-vitals', 'next/typescript'),
-  // Integrate ESLint + Prettier:
-  ...compat.extends('plugin:prettier/recommended'),
-];
+const eslintConfig = [...compat.extends('next/core-web-vitals', 'next/typescript', 'prettier')];
 
 export default eslintConfig;

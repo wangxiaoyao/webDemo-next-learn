@@ -25,6 +25,8 @@ config:
 webDemo-next-learn/										# 文件夹统一使用：kebab-case
 ├── src/                              # Static assets (images, fonts)
     ├── app/                          # Routing (app directory for App Router)
+    │   ├── api
+    │       ├── save                  # 必须使用route.ts
     │   ├── layout.js
     │   ├── page.js                   # Root page
     │   └── dashboard/                # route即url。短：全部小写，长：kebab-case	egg：/user-settings
@@ -53,7 +55,7 @@ webDemo-next-learn/										# 文件夹统一使用：kebab-case
     │   └── index.js                  # Export all hooks
     ├── contexts/                     # React Context API providers => Context结尾，大驼峰
     │   └── AuthContext.js
-    ├── types/                        # TS类型
+    ├── types/                        # TS类型: 统一使用PascalCase（首字母大写）：ResponseData
     │   └── index.ts
     ├── constants/                    # 常量：统一导入index.ts
     │   └── pages.ts                  # 页面层级的常量
@@ -141,21 +143,30 @@ src/
 ```shell
 目的：
 1 检测代码是否按照Prettier 的约定，否则按照eslint 进行报错
-2 shift + option + f ： 按照约定格式化
+2 shift + option + f ： 按照约定格式化，或者
 
 
 ## 安装vscode 插件
 - ESLint (by Microsoft)
 - Prettier - Code formatter (by Prettier)
 
-## prettier
-npm install -D prettier eslint-config-prettier eslint-plugin-prettier
+## prettier 
+### 安装：eslint-plugin-prettier：让prettier成为eslint的规则。   eslint-config-prettier(重要) ：让eslint不和prettier冲突,使格式问题不会报错。 
+npm install -D prettier eslint-plugin-prettier eslint-config-prettier 
 
-## .prettierrc 文件
-  // Integrate ESLint + Prettier:
-  ...compat.extends("plugin:prettier/recommended")
+### 配置 .prettierrc
+设置你自己的规则
 
-## .prettierignore文件
+### 配置.prettierignore文件
+哪些文件不用生效
+
+
+## eslint： 
+### 配置 eslint.config.mjs ： 最新版本Flat Config
+方式1:使用Flatcompat
+
+方式2:不使用
+
 
 ## package.json。设置format命令，所有代码格式化
  "format": "prettier --write ."
