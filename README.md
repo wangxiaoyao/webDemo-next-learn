@@ -27,10 +27,6 @@ all-branches-rules
 - Require signed commits
 - Block force pushes
 
-123
-123
-
-
 ### 1 创建项目
 
 ```shell
