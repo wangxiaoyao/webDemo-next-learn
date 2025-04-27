@@ -4,6 +4,30 @@ Personal learning project built with Next.js. This project showcases a variety o
 
 ## 一 Next project
 
+### github repo
+
+#### 1 workflows
+
+1 github CodeQL analysis (自带)
+
+2 
+
+#### 2 branch rules
+
+main branch rules
+
+- Restrict updates
+- Restrict deletions
+- Require deployments to succeed => 需要部署环境。
+- Require signed commits
+- Require a pull request before merging
+- Require status checks to pass
+
+all-branches-rules
+- Require signed commits
+- Block force pushes
+
+
 ### 1 创建项目
 
 ```shell
