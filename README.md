@@ -22,7 +22,6 @@ main branch rules
 - Require signed commits
 - Require a pull request before merging
 - Require status checks to pass
-123
 
 all-branches-rules
 - Require signed commits
