@@ -43,13 +43,15 @@ npm install -D prettier eslint-config-prettier
 ### 配置 eslint.config.mjs（使用Flatcompat）
 配置：eslint-config-prettier =》 'prettier'
 
-## package.json scripts
 
+## package.json scripts
 ### 1 format 和 lint 用于修复。
 #### prettier自动修复所有格式问题。
 #### lint自动修复：1 var =》const 2 配置eslint：'react/jsx-sort-props'。修复jsx/tsx属性顺序.不要选择ESLint第一参数"error"(源自next 内置：eslint-plugin-react)
+#### 坑：next lint 接目录，和lint-staged传递单文件不符合。所以使用原本的eslint
     "format": "prettier --write .",
-    "lint": "next lint --fix --max-warnings=0 --no-ignore",
+    "lint": "eslint --fix --max-warnings=0 --no-ignore",
+    "lint:next": "next lint --fix --max-warnings=0 --no-ignore",
 
 ### 2 check 用于集合所有的校验
     "check": "npm run format:check && npm run lint:check && npm run tsc",
@@ -95,8 +97,32 @@ npx husky init
 npx lint-staged
 
 ## pre-push
+npm run check
 
+## commit-message
+### 安装规则和CLI： https://www.npmjs.com/package/@commitlint/config-conventional
+### 将规则（@commitlint/config-conventional）：配置进commitlint.config.mjs
+### 使用commitlint去执行
+npx --no -- commitlint --edit "$1"
 ```
+
+### Commit-Message 规则：
+
+```shell
+<type>[optional scope]: <subject>
+
+[optional body]
+
+[optional footer(s)]
+```
+
+| 字段        | 说明                                            | 举例                                                                                                                                                                                                                |
+| ----------- | ----------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **type**    | 本次变更的类别                                  | `feat` (新功能) · `fix` (修复) · `docs` (文档) · `style` (格式，无逻辑变更) · `refactor` (重构) · `perf` (性能) · `test` (测试) · `build` (构建脚本或依赖) · `ci` (持续集成) · `chore` (日常事务) · `revert` (回滚) |
+| **scope**   | 可选：受影响的模块或目录                        | `auth` `api` `navbar`                                                                                                                                                                                               |
+| **subject** | 50 字符以内的动词短句，首字母小写，末尾不加句号 | `add login redirect`, `fix dropdown z-index`                                                                                                                                                                        |
+| **body**    | 可选：阐述动机、对比前后行为                    | 多行文本，换行宽度 ≤ 72                                                                                                                                                                                             |
+| **footer**  | 关闭 issue / 破坏性变更说明                     | `BREAKING CHANGE:` 或 `Closes #123`                                                                                                                                                                                 |
 
 ### 4 github workflows (.github/workflows/CI.yml)
 
