@@ -26,7 +26,6 @@ main branch rules
 all-branches-rules
 - Require signed commits
 - Block force pushes
-123
 
 ### 1 创建项目
 
