@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  push:
+    branches: [main, 'release/**']
+  pull_request:
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [18.x, 20.x, 22.x] # keep both LTS lines happy
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node ${{ matrix.node }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm # or "pnpm" / "yarn"
+
+      - run: npm ci # ⬇️ fast & reproducible
+
+      - name: Build
+        run: npm run build # Next.js static check
+
+      #   - name: Unit tests
+      #     run: npm test # jest / vitest
+
+      - name: Upload coverage
+        if: success() && env.CODECOV_TOKEN != ''
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
