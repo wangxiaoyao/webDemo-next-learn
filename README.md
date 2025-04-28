@@ -81,9 +81,9 @@ prettier-plugin-tailwindcss:
 
 1 Git hooks 在：.git/hooks/。 确保Husky目录和.git在同一目录
 
-2 husky install 的作用是将 /husky/XXX 中设计的git hook 写入.git/hooks/
+2 husky install 的作用是将 .husky/XXX 中的规则：如pre-commit 写入.git/hooks/
 
-3 如何自动触发husky install 。 我们通过npm的生命周期（npm lifecycle scripts）：‘prepare’ 阶段（nom install 之后），所以配置scripts： 'prepare':'husky install'
+3 如何自动触发husky install。配置scripts： 'prepare':'husky install'。通过npm的生命周期（npm lifecycle scripts）：‘prepare’ 阶段。当执行npm install后则会执行prepare。
 
 ```shell
 ## 安装
@@ -124,7 +124,29 @@ npx --no -- commitlint --edit "$1"
 | **body**    | 可选：阐述动机、对比前后行为                    | 多行文本，换行宽度 ≤ 72                                                                                                                                                                                             |
 | **footer**  | 关闭 issue / 破坏性变更说明                     | `BREAKING CHANGE:` 或 `Closes #123`                                                                                                                                                                                 |
 
+| 类型       | 典型场景                      | 例子                           |
+| ---------- | ----------------------------- | ------------------------------ |
+| `feat`     | 新增用户可以直接看到的新功能  | 新增 dark mode                 |
+| `fix`      | 修复 bug                      | 修复 token 失效问题            |
+| `docs`     | 改文档内容                    | 更新 README.md                 |
+| `style`    | 调整代码格式/排版，不影响功能 | 调整缩进、改引号               |
+| `refactor` | 重构现有代码逻辑，不加新功能  | 优化 hooks 构造器              |
+| `perf`     | 提升性能                      | 加快页面渲染速度               |
+| `test`     | 添加或修改测试用例            | 新增 login 测试                |
+| `build`    | 构建系统/打包工具变更         | 升级 Webpack 配置              |
+| `ci`       | CI/CD 配置更新                | 改 GitHub Actions 流程         |
+| `chore`    | 杂项/维护性修改               | 修改 Husky、更新脚本、升级依赖 |
+| `revert`   | 回滚之前的提交                | 回滚 "feat: 新增支付功能"      |
+
 ### 4 github workflows (.github/workflows/CI.yml)
+
+GitHub action：
+
+- 1 lint 阶段
+
+- 2 test阶段
+
+- 3 build阶段
 
 ### 5 github repo
 
