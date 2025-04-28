@@ -1,3 +1,6 @@
+# npx tsc --noEmit 生成的文件。记录并加速下次更快运行。
+*.tsbuildinfo
+
 # Logs
 logs
 *.log

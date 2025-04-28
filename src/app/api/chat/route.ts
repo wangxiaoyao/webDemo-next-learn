@@ -140,12 +140,9 @@ export async function POST(req: Request) {
     });
   } catch (error) {
     console.error('Error in chat API:', error);
-    return new Response(
-      JSON.stringify({ error: 'Failed to process request' }),
-      {
-        status: 500,
-        headers: { 'Content-Type': 'application/json' },
-      },
-    );
+    return new Response(JSON.stringify({ error: 'Failed to process request' }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' },
+    });
   }
 }

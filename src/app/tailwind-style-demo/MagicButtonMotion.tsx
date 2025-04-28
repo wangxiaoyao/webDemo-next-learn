@@ -23,18 +23,18 @@ export default function MagicButtonMotion() {
     <div className="border-b-2 border-b-emerald-700 py-10">
       <h1>点击按钮</h1>
       <button
+        className="overflow-hidden rounded-lg bg-amber-800 text-white active:scale-90"
         onMouseDown={handleMouseDown}
         onMouseUp={handleMouseUp}
-        className="overflow-hidden rounded-lg bg-amber-800 text-white active:scale-90"
       >
         点击冒泡
         <AnimatePresence>
           {isPressing && (
             <motion.span
-              initial={{ scale: 0, opacity: 0.5 }}
               animate={{ scale: 3, opacity: 0.9 }}
-              transition={{ duration: 1, ease: 'easeOut' }}
               className="absolute inset-0 rounded-full bg-white"
+              initial={{ scale: 0, opacity: 0.5 }}
+              transition={{ duration: 1, ease: 'easeOut' }}
             />
           )}
         </AnimatePresence>
@@ -43,11 +43,11 @@ export default function MagicButtonMotion() {
       <AnimatePresence>
         {showCopied && (
           <motion.div
-            initial={{ opacity: 0, scale: 0.5 }}
             animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0 }}
-            transition={{ duration: 0.3 }}
             className="mt-4 rounded-lg bg-green-500 px-3 py-1 text-white shadow"
+            exit={{ opacity: 0, scale: 0 }}
+            initial={{ opacity: 0, scale: 0.5 }}
+            transition={{ duration: 0.3 }}
           >
             翻译已复制 ✅
           </motion.div>

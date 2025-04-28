@@ -4,32 +4,6 @@ Personal learning project built with Next.js. This project showcases a variety o
 
 ## 一 Next project
 
-### github repo
-
-#### 1 github workflows (.github/workflows/XXX.yml)
-
-
-
-
-1 github CodeQL analysis (自带)
-
-2 
-
-#### 2 branch rules
-
-main branch rules
-
-- Restrict updates
-- Restrict deletions
-- Require deployments to succeed => 需要部署环境。
-- Require signed commits
-- Require a pull request before merging
-- Require status checks to pass
-
-all-branches-rules
-- Require signed commits
-- Block force pushes
-
 ### 1 创建项目
 
 ```shell
@@ -44,6 +18,105 @@ config:
 ✔ Would you like to use Turbopack for `next dev`? … Yes
 ✔ Would you like to customize the import alias (`@/*` by default)? … Yes
 ```
+
+### 2 ESLint + Prettier + check script
+
+```shell
+目的：check code
+
+## 安装vscode 插件
+- ESLint (by Microsoft)
+- Prettier - Code formatter (by Prettier)
+
+## prettier
+### eslint-config-prettier：关闭所有与 Prettier 的格式规则相冲突的 ESLint，则ESLint不会检查格式。
+### eslint-plugin-prettier：提供一个prettier规则，则ESlint会报告prettier规则错误（性能不建议使用）
+npm install -D prettier eslint-config-prettier
+
+### 配置 .prettierrc
+设置规则
+
+### 配置.prettierignore文件
+哪些文件不用生效
+
+## eslint
+### 配置 eslint.config.mjs（使用Flatcompat）
+配置：eslint-config-prettier =》 'prettier'
+
+## package.json scripts
+
+### 1 format 和 lint 用于修复。
+#### prettier自动修复所有格式问题。
+#### lint自动修复：1 var =》const 2 配置eslint：'react/jsx-sort-props'。修复jsx/tsx属性顺序.不要选择ESLint第一参数"error"(源自next 内置：eslint-plugin-react)
+    "format": "prettier --write .",
+    "lint": "next lint --fix --max-warnings=0 --no-ignore",
+
+### 2 check 用于集合所有的校验
+    "check": "npm run format:check && npm run lint:check && npm run tsc",
+    "format:check": "prettier --check .",
+    "lint:check": "next lint",
+    "tsc": "npx tsc --noEmit"
+```
+
+#### tailwind CSS
+
+```shell
+## vscode
+- Tailwind CSS IntelliSense
+
+## npm包：用来格式化顺序
+prettier-plugin-tailwindcss:
+
+## 配置.prettierrc
+{
+  "plugins": ["prettier-plugin-tailwindcss"]
+}
+```
+
+### 3 Husky 与 Git hooks
+
+说明：
+
+1 Git hooks 在：.git/hooks/。 确保Husky目录和.git在同一目录
+
+2 husky install 的作用是将 /husky/XXX 中设计的git hook 写入.git/hooks/
+
+3 如何自动触发husky install 。 我们通过npm的生命周期（npm lifecycle scripts）：‘prepare’ 阶段（nom install 之后），所以配置scripts： 'prepare':'husky install'
+
+```shell
+## 安装
+npm install -D husky lint-staged
+
+## 初始化
+npx husky init
+
+## pre-commit
+### npx =》 lint-staged node包 =》 执行package.json中的 "lint-staged"配置 =》 -- 表示将提交的文件（参数）不交给npm而是交给 prettier/eslint
+npx lint-staged
+
+## pre-push
+
+```
+
+### 4 github workflows (.github/workflows/CI.yml)
+
+### 5 github repo
+
+#### branch rules
+
+main-branch-rules
+
+- Restrict updates
+- Restrict deletions
+- Require deployments to succeed => 需要部署环境。
+- Require signed commits
+- Require a pull request before merging
+- Require status checks to pass
+
+all-branches-rules
+
+- Require signed commits
+- Block force pushes
 
 ### 2 project structure
 
@@ -91,7 +164,10 @@ webDemo-next-learn/										# 文件夹统一使用：kebab-case
 ├── next.config.js                 # Next.js configuration
 ├── jsconfig.json / tsconfig.json  # Path aliases configuration
 └── package.json
-└── .eslintrc.js              		 # ESLint 配置
+└── eslint.config.mjs            	 # ESLint 配置
+└── .prettierrc										 # prettier 配置
+└── .prettierignore								 # 过滤prettier文件
+
 
 ```
 
@@ -125,21 +201,6 @@ src/
 
 ### 3 configurations
 
-#### tailwind CSS
-
-```shell
-## vscode
-- Tailwind CSS IntelliSense
-
-## npm
-- prettier-plugin-tailwindcss:
-// .prettierrc
-{
-  "plugins": ["prettier-plugin-tailwindcss"]
-}
-
-```
-
 #### TypeScript
 
 ```
@@ -162,40 +223,6 @@ src/
       "@constants/*": [
         "./src/constants/*"
       ]
-```
-
-#### ESLint + Prettier
-
-```shell
-目的：
-1 检测代码是否按照Prettier 的约定，否则按照eslint 进行报错
-2 shift + option + f ： 按照约定格式化，或者
-
-
-## 安装vscode 插件
-- ESLint (by Microsoft)
-- Prettier - Code formatter (by Prettier)
-
-## prettier 
-### 安装：eslint-plugin-prettier：让prettier成为eslint的规则。   eslint-config-prettier(重要) ：让eslint不和prettier冲突,使格式问题不会报错。 
-npm install -D prettier eslint-plugin-prettier eslint-config-prettier 
-
-### 配置 .prettierrc
-设置你自己的规则
-
-### 配置.prettierignore文件
-哪些文件不用生效
-
-
-## eslint： 
-### 配置 eslint.config.mjs ： 最新版本Flat Config
-方式1:使用Flatcompat
-
-方式2:不使用
-
-
-## package.json。设置format命令，所有代码格式化
- "format": "prettier --write ."
 ```
 
 #### Husky + Lint-staged (for git hook & code quality)

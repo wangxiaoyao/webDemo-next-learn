@@ -15,10 +15,10 @@ export default function ToggleBox() {
       <AnimatePresence>
         {isVisible && ( // 条件渲染
           <motion.div
-            key="myBox" // 必须有 key
-            initial={{ opacity: 0, scale: 0.8 }} // 进入时的初始状态
             animate={{ opacity: 1, scale: 1 }} // 进入时的目标状态
             exit={{ opacity: 0, scale: 0.8 }} // 退出时的目标状态
+            initial={{ opacity: 0, scale: 0.8 }} // 进入时的初始状态
+            key="myBox" // 必须有 key
             transition={{ duration: 0.3 }}
             style={{
               width: 100,

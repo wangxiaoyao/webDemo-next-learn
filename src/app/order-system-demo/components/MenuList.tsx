@@ -29,8 +29,8 @@ const MenuList: React.FC<MenuListProps> = ({ onAddToCart }) => {
       <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
         {menuItems.map((item) => (
           <div
-            key={item.id}
             className="flex cursor-pointer flex-col items-center justify-center rounded-lg border p-4 text-center transition-colors hover:bg-gray-50"
+            key={item.id}
             onClick={() => onAddToCart({ name: item.name, price: item.price })}
           >
             <p className="text-lg font-medium">{item.name}</p>

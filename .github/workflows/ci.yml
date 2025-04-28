@@ -1,35 +1,70 @@
 name: CI
 
+# Cancel stale runs on the same branch / PR. github.workflow：CI(当前工作流的名字)
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 on:
   push:
     branches: [main, 'release/**']
   pull_request:
 
+# Re-use the same cache recipe in every job with a YAML anchor (<<: *cache-node*)
+defaults:
+  run:
+    shell: bash
+
 jobs:
-  build-and-test:
+  #######################################################################
+  # 1) Lint (ESLint / Prettier / tsc) – quickest feedback first
+  #######################################################################
+  lint:
+    name: Lint ✔
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node: [18.x, 20.x, 22.x] # keep both LTS lines happy
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup Node ${{ matrix.node }}
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ matrix.node }}
-          cache: npm # or "pnpm" / "yarn"
+      - uses: actions/setup-node@v4
+        with: { node-version: lts/*, cache: npm }
 
-      - run: npm ci # ⬇️ fast & reproducible
+      - run: npm ci
+      - run: npm run check
 
-      - name: Build
-        run: npm run build # Next.js static check
+  #######################################################################
+  # 2) Unit tests (matrix 18/20/22) + Codecov upload
+  #######################################################################
+  # test:
+  #   name: Test 🧪 (${{ matrix.node }})
+  #   runs-on: ubuntu-latest
+  #   strategy:
+  #     matrix:
+  #       node: [18.x, 20.x, 22.x]
 
-      #   - name: Unit tests
-      #     run: npm test # jest / vitest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: actions/setup-node@v4
+  #       with:
+  #         node-version: ${{ matrix.node }}
+  #         cache: npm
+  #     - run: npm ci
+  #     - run: npm test -- --coverage # Vitest/Jest with cobertura or lcov
+  #     - name: Upload coverage
+  #       if: success() && env.CODECOV_TOKEN != ''
+  #       uses: codecov/codecov-action@v4
+  #       with:
+  #         token: ${{ secrets.CODECOV_TOKEN }}
 
-      - name: Upload coverage
-        if: success() && env.CODECOV_TOKEN != ''
-        uses: codecov/codecov-action@v4
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
+  #######################################################################
+  # 3) Build (only latest Node, waits for everything else)
+  #######################################################################
+  build:
+    name: Build 🚀
+    needs: [lint] # gate – run only if ALL pass
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: lts/*, cache: npm }
+      - run: npm ci
+      - run: npm run build

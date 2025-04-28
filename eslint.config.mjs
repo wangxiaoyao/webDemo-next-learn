@@ -10,6 +10,22 @@ const compat = new FlatCompat({
   baseDirectory: __dirname,
 });
 
-const eslintConfig = [...compat.extends('next/core-web-vitals', 'next/typescript', 'prettier')];
+const eslintConfig = [
+  ...compat.extends('next/core-web-vitals', 'next/typescript', 'prettier'),
+  {
+    rules: {
+      // ⭐ 开启属性排序（支持 --fix）
+      'react/jsx-sort-props': [
+        'warn',
+        {
+          shorthandFirst: true, // 简写属性（{foo}）放前面
+          multiline: 'last', // 多行属性排最后
+          noSortAlphabetically: false, // true = 自定义顺序，false = 字母序
+          callbacksLast: true, // onClick 放最后
+        },
+      ],
+    },
+  },
+];
 
 export default eslintConfig;

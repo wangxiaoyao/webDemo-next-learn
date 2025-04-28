@@ -20,16 +20,16 @@ const itemVariants = {
 export default function StaggeredListMotion({ items }: { items: string[] }) {
   return (
     <motion.ul
-      variants={containerVariants} // 将 containerVariants 传递给父容器
-      initial="hidden" // 初始状态设为 hidden
       animate="visible" // 动画到 visible 状态
+      initial="hidden" // 初始状态设为 hidden
       style={{ listStyle: 'none', padding: 0 }}
+      variants={containerVariants} // 将 containerVariants 传递给父容器
     >
       {items.map((item, i) => (
         <motion.li
           key={i} // 重要：在列表中使用 key
-          variants={itemVariants} // 将 itemVariants 传递给子元素
           style={{ marginBottom: 10, backgroundColor: '#eee', padding: 10 }}
+          variants={itemVariants} // 将 itemVariants 传递给子元素
         >
           {item}
         </motion.li>

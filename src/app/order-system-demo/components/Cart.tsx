@@ -79,10 +79,7 @@ const Cart: React.FC<CartProps> = ({ cart, setCart }) => {
         ) : (
           <ul className="space-y-2">
             {cart.items.map((item, index) => (
-              <li
-                key={index}
-                className="flex items-center justify-between border-b pb-2"
-              >
+              <li className="flex items-center justify-between border-b pb-2" key={index}>
                 <div>
                   <p className="font-medium">{item.name}</p>
                   <p className="text-sm text-gray-600">
@@ -103,10 +100,7 @@ const Cart: React.FC<CartProps> = ({ cart, setCart }) => {
                   >
                     +
                   </button>
-                  <button
-                    className="ml-2 text-sm text-red-500"
-                    onClick={() => removeItem(index)}
-                  >
+                  <button className="ml-2 text-sm text-red-500" onClick={() => removeItem(index)}>
                     刪除
                   </button>
                 </div>
@@ -123,13 +117,13 @@ const Cart: React.FC<CartProps> = ({ cart, setCart }) => {
         </div>
 
         <button
+          disabled={isProcessing || cart.items.length === 0}
           className={`w-full rounded px-4 py-3 font-bold text-white ${
             isProcessing || cart.items.length === 0
               ? 'cursor-not-allowed bg-gray-400'
               : 'bg-blue-600 hover:bg-blue-700'
           }`}
           onClick={handlePayment}
-          disabled={isProcessing || cart.items.length === 0}
         >
           {isProcessing ? '處理中...' : isComplete ? '支付成功！' : '立即付款'}
         </button>

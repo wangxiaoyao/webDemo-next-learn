@@ -1,7 +1,10 @@
 .next
 node_modules
+public
 dist
 build
 package-lock.json
-yarn.lock
+*.lock
 pnpm-lock.yaml
+out
+coverage

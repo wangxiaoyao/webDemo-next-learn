@@ -32,9 +32,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   return (
     // 关键字value
-    <AuthContext.Provider value={{ username, setUsername }}>
-      {children}
-    </AuthContext.Provider>
+    <AuthContext.Provider value={{ username, setUsername }}>{children}</AuthContext.Provider>
   );
 }
 

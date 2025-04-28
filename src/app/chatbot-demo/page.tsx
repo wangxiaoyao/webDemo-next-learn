@@ -65,23 +65,17 @@ export default function ChatbotDemo() {
           {messages.length === 0 ? (
             <div className="py-8 text-center text-gray-500">
               <p>Start a conversation with the chatbot!</p>
-              <p className="mt-2">
-                Try asking something like: What can you help me with?
-              </p>
+              <p className="mt-2">Try asking something like: What can you help me with?</p>
             </div>
           ) : (
             messages.map((message) => (
               <div
+                className={`mb-4 ${message.role === 'user' ? 'text-right' : 'text-left'}`}
                 key={message.id}
-                className={`mb-4 ${
-                  message.role === 'user' ? 'text-right' : 'text-left'
-                }`}
               >
                 <div
                   className={`inline-block rounded-lg p-3 ${
-                    message.role === 'user'
-                      ? 'bg-blue-500 text-white'
-                      : 'bg-gray-200 text-gray-800'
+                    message.role === 'user' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-800'
                   }`}
                 >
                   {message.content}
@@ -93,18 +87,18 @@ export default function ChatbotDemo() {
         </div>
 
         <div className="border-t p-4">
-          <form onSubmit={handleSubmit} className="flex gap-2">
+          <form className="flex gap-2" onSubmit={handleSubmit}>
             <input
               className="flex-1 rounded border px-3 py-2"
+              disabled={status !== 'ready'}
               placeholder="Type your message..."
               value={input}
               onChange={handleInputChange}
-              disabled={status !== 'ready'}
             />
             <button
-              type="submit"
-              disabled={status !== 'ready' || input.trim() === ''}
               className="rounded bg-blue-500 px-4 py-2 text-white disabled:opacity-50"
+              disabled={status !== 'ready' || input.trim() === ''}
+              type="submit"
             >
               {status !== 'ready' ? 'Thinking...' : 'Send'}
             </button>
