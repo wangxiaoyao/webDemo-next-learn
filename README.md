@@ -6,7 +6,10 @@ Personal learning project built with Next.js. This project showcases a variety o
 
 ### github repo
 
-#### 1 workflows
+#### 1 github workflows (.github/workflows/XXX.yml)
+
+
+
 
 1 github CodeQL analysis (自带)
 
@@ -26,7 +29,6 @@ main branch rules
 all-branches-rules
 - Require signed commits
 - Block force pushes
-123
 
 ### 1 创建项目
 
