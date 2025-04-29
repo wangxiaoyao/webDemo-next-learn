@@ -2,7 +2,7 @@ name: 'CodeQL Advanced'
 
 on:
   workflow_run:
-    workflows: ['ci-fast']
+    workflows: ['CI Check-Test-Build']
     branches: [main, 'release/**']
     types: [completed]
   schedule:

@@ -229,8 +229,6 @@ webDemo-next-learn/										# 文件夹统一使用：kebab-case
 └── eslint.config.mjs            	 # ESLint 配置
 └── .prettierrc										 # prettier 配置
 └── .prettierignore								 # 过滤prettier文件
-
-
 ```
 
 ```shell
@@ -286,7 +284,5 @@ src/
         "./src/constants/*"
       ]
 ```
-
-#### Husky + Lint-staged (for git hook & code quality)
 
 #### React Testing Library (Jest for testing)
