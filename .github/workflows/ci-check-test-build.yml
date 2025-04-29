@@ -1,4 +1,4 @@
-name: ci-fast
+name: 'CI Check/Test/Build'
 
 # Cancel stale runs on the same branch / PR. github.workflow：ci-fast(当前工作流的名字)
 concurrency:

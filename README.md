@@ -75,7 +75,7 @@ prettier-plugin-tailwindcss:
 }
 ```
 
-### 3 Husky 与 Git hooks
+### 3 husky/lint-staged 与 Git hooks
 
 说明：
 
@@ -138,7 +138,7 @@ npx --no -- commitlint --edit "$1"
 | `chore`    | 杂项/维护性修改               | 修改 Husky、更新脚本、升级依赖 |
 | `revert`   | 回滚之前的提交                | 回滚 "feat: 新增支付功能"      |
 
-### 4 github workflows (.github/workflows/XXX.yml)：GitHub action
+### 4 github workflows (.github/workflows/XXX.yml)：GitHub action=》code quality
 
 > 注意点：
 >
@@ -168,11 +168,12 @@ main-branch-rules
 
 - Restrict updates
 - Restrict deletions
-- Require deployments to succeed => 需要部署环境。
+- Require deployments to succeed => 需要部署环境
 - Require signed commits
 - Require a pull request before merging
 - Require status checks to pass => 需要先创建XXX.yml 跑一遍。 然后选择 add checks
 - Block force pushes
+- Require code scanning results =》codeQL执行不通过会阻止pr
 
 all-branches-rules
 
