@@ -19,15 +19,11 @@ config:
 ✔ Would you like to customize the import alias (`@/*` by default)? … Yes
 ```
 
-### 2 React Testing Library
+### 2 React Testing Library(RTL)
 
-集成test
-
-### 2 ESLint + Prettier + check script
+### 3 ESLint + Prettier + scripts
 
 ```shell
-目的：check code
-
 ## 安装vscode 插件
 - ESLint (by Microsoft)
 - Prettier - Code formatter (by Prettier)
@@ -38,7 +34,7 @@ config:
 npm install -D prettier eslint-config-prettier
 
 ### 配置 .prettierrc
-设置规则
+设置代码规范
 
 ### 配置.prettierignore文件
 哪些文件不用生效
@@ -47,11 +43,10 @@ npm install -D prettier eslint-config-prettier
 ### 配置 eslint.config.mjs（使用Flatcompat）
 配置：eslint-config-prettier =》 'prettier'
 
-
 ## package.json scripts
 ### 1 format 和 lint 用于修复。
 #### prettier自动修复所有格式问题。
-#### lint自动修复：1 var =》const 2 配置eslint：'react/jsx-sort-props'。修复jsx/tsx属性顺序.不要选择ESLint第一参数"error"(源自next 内置：eslint-plugin-react)
+#### lint自动修复：1 var =》const 2 配置eslint：'react/jsx-sort-props'。修复jsx/tsx属性顺序.不要选择ESLint第一参数"error"(源自next内置：eslint-plugin-react)
 #### 坑：next lint 接目录，和lint-staged传递单文件不符合。所以使用原本的eslint
     "format": "prettier --write .",
     "lint": "eslint --fix --max-warnings=0 --no-ignore",
@@ -79,40 +74,39 @@ prettier-plugin-tailwindcss:
 }
 ```
 
-### 3 husky/lint-staged 与 Git hooks
+### 4 husky/lint-staged 与 Git hooks
 
 说明：
 
-1 Git hooks 在：.git/hooks/。 确保Husky目录和.git在同一目录
+1 Git hooks 原本在：.git/hooks/。 husky install 改变了目录。所以确保Husky目录和.git在同一目录。
 
-2 husky install 的作用是将 .husky/XXX 中的规则：如pre-commit 写入.git/hooks/
-
-3 如何自动触发husky install。配置scripts： 'prepare':'husky install'。通过npm的生命周期（npm lifecycle scripts）：‘prepare’ 阶段。当执行npm install后则会执行prepare。
+2 如何自动触发husky install。配置scripts： 'prepare':'husky install'。通过npm的生命周期（npm lifecycle scripts）：‘prepare’ 阶段。当执行npm install后则会执行prepare。
 
 ```shell
 ## 安装
 npm install -D husky lint-staged
 
-## 初始化
-npx husky init
+## 创建.husky 文件夹,并改变Git hooks路径为.husky
+npx husky install
 
-## pre-commit
+## pre-commit（文件）
 ### npx =》 lint-staged node包 =》 执行package.json中的 "lint-staged"配置 =》 -- 表示将提交的文件（参数）不交给npm而是交给 prettier/eslint
 npx lint-staged
 
-## pre-push
+## pre-push（文件）
 npm run check
 
-## commit-message
-### 安装规则和CLI： https://www.npmjs.com/package/@commitlint/config-conventional
-### 将规则（@commitlint/config-conventional）：配置进commitlint.config.mjs
-### 使用commitlint去执行
+## commit-message（文件）
+### 安装：规则和CLI： https://www.npmjs.com/package/@commitlint/config-conventional
+### 1 规则（@commitlint/config-conventional）：配置进commitlint.config.mjs
+### 2 使用commitlint去执行
 npx --no -- commitlint --edit "$1"
 ```
 
-### Commit-Message 规则：
+#### Commit-Message 规则：
 
 ```shell
+## 记住<subject>前有一个空格
 <type>[optional scope]: <subject>
 
 [optional body]
@@ -142,11 +136,11 @@ npx --no -- commitlint --edit "$1"
 | `chore`    | 杂项/维护性修改               | 修改 Husky、更新脚本、升级依赖 |
 | `revert`   | 回滚之前的提交                | 回滚 "feat: 新增支付功能"      |
 
-### 4 github workflows (.github/workflows/XXX.yml)：GitHub action=》code quality
+### 5 github workflows (.github/workflows/XXX.yml)：GitHub action=》code quality
 
 > 注意点：
 >
-> 1 yml的key value 格式：必须有一个空格。
+> 1 yml 的 key-value 格式：必须有一个空格。
 >
 > 2 workflows permissions 问题。 security-events: write 表示可以将结果发送到github security标签页。
 >
@@ -164,7 +158,21 @@ npx --no -- commitlint --edit "$1"
 
 使用官方的CodeQL
 
-### 5 github repo
+### 6 vercel
+
+> 说明：
+>
+> 1 vercel和github关联后，每次 push / PR 触发部署并把结果写回 GitHub Checks。比如选择分支规则：Require deployments to succeed。 生产部署失败即禁止 merge / push（针对main分支）
+>
+> 2 vercel仅提供两个环境preview 和 production。非main分支统一部署到preview环境。
+>
+> 3 非main分支提交pr后。vercel会自动把preview的链接注入到comment中
+
+### 7 github repo
+
+#### settings-environment
+
+vercel: 使用main分支部署一次production环境，使用非main分支部署一次preview环境。则会自动生成两个环境。
 
 #### branch rules
 
@@ -172,7 +180,7 @@ main-branch-rules
 
 - Restrict updates
 - Restrict deletions
-- Require deployments to succeed => 成功部署环境后，允许pr（需要github建环境）
+- Require deployments to succeed => 检测部署的环境后，允许pr（环境：production/preview）
 - Require signed commits
 - Require a pull request before merging
 - Require status checks to pass => 需要先创建XXX.yml 跑一遍。 然后选择 add checks
@@ -181,20 +189,10 @@ main-branch-rules
 
 all-branches-rules
 
-- Require signed commits
+- Require signed commits =》 注意配置 signature 使用ssh
 - Block force pushes
 
-### 6 vercel
-
-github 和 vercel的联动。 必须有三个环境
-
-1 development
-
-2 preview
-
-3 prodction
-
-### 7 project structure
+### 8 project structure
 
 ```shell
 webDemo-next-learn/										# 文件夹统一使用：kebab-case
@@ -271,14 +269,8 @@ src/
     │   └── common.json
     └── zh/
         └── common.json
-```
 
-### 3 configurations
-
-#### TypeScript
-
-```
-## 配置路径
+## tsconfig.json配置路径
       "@components/*": [
         "./src/components/*"
       ],
