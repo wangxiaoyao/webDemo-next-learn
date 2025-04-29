@@ -7,8 +7,7 @@ export default function Page() {
     <>
       {/* <AuthContext.Provider value={'hello'}> */}
       <AppProviders>
-        <div className="w-2" id="123"></div>
-        <div>auth-context-demo123</div>
+        <div>auth-context-demo</div>
         <AuthContextChild />
       </AppProviders>
       {/* </AuthContext.Provider> */}

@@ -148,7 +148,7 @@ npx --no -- commitlint --edit "$1"
 >
 > 3 串行： 当ci-fast.yml执行完，再执行codeql.yml
 
-1 ci-fast.yml：
+1 ci-check-test-build.yml：
 
 - 1 lint 阶段
 
