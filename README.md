@@ -172,12 +172,12 @@ main-branch-rules
 
 - Restrict updates
 - Restrict deletions
-- Require deployments to succeed => 需要部署环境
+- Require deployments to succeed => 成功部署环境后，允许pr（需要github建环境）
 - Require signed commits
 - Require a pull request before merging
 - Require status checks to pass => 需要先创建XXX.yml 跑一遍。 然后选择 add checks
 - Block force pushes
-- Require code scanning results =》codeQL执行不通过会阻止pr
+- Require code scanning results =》codeQL执行通过，允许pr
 
 all-branches-rules
 
