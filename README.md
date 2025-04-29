@@ -138,15 +138,27 @@ npx --no -- commitlint --edit "$1"
 | `chore`    | 杂项/维护性修改               | 修改 Husky、更新脚本、升级依赖 |
 | `revert`   | 回滚之前的提交                | 回滚 "feat: 新增支付功能"      |
 
-### 4 github workflows (.github/workflows/CI.yml)
+### 4 github workflows (.github/workflows/XXX.yml)：GitHub action
 
-GitHub action：
+> 注意点：
+>
+> 1 yml的key value 格式：必须有一个空格。
+>
+> 2 workflows permissions 问题。 security-events: write 表示可以将结果发送到github security标签页。
+>
+> 3 串行： 当ci-fast.yml执行完，再执行codeql.yml
+
+1 ci-fast.yml：
 
 - 1 lint 阶段
 
 - 2 test阶段
 
 - 3 build阶段
+
+2 codeql.yml
+
+使用官方的CodeQL
 
 ### 5 github repo
 
@@ -159,14 +171,15 @@ main-branch-rules
 - Require deployments to succeed => 需要部署环境。
 - Require signed commits
 - Require a pull request before merging
-- Require status checks to pass
+- Require status checks to pass => 需要先创建XXX.yml 跑一遍。 然后选择 add checks
+- Block force pushes
 
 all-branches-rules
 
 - Require signed commits
 - Block force pushes
 
-### 2 project structure
+### 6 project structure
 
 ```shell
 webDemo-next-learn/										# 文件夹统一使用：kebab-case

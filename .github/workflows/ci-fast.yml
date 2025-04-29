@@ -15,6 +15,10 @@ defaults:
   run:
     shell: bash
 
+permissions:
+  contents: read
+  pull-requests: write
+
 jobs:
   #######################################################################
   # 1) Lint (ESLint / Prettier / tsc) – quickest feedback first
