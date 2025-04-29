@@ -19,6 +19,10 @@ config:
 ✔ Would you like to customize the import alias (`@/*` by default)? … Yes
 ```
 
+### 2 React Testing Library
+
+集成test
+
 ### 2 ESLint + Prettier + check script
 
 ```shell
@@ -180,7 +184,17 @@ all-branches-rules
 - Require signed commits
 - Block force pushes
 
-### 6 project structure
+### 6 vercel
+
+github 和 vercel的联动。 必须有三个环境
+
+1 development
+
+2 preview
+
+3 prodction
+
+### 7 project structure
 
 ```shell
 webDemo-next-learn/										# 文件夹统一使用：kebab-case
@@ -284,5 +298,3 @@ src/
         "./src/constants/*"
       ]
 ```
-
-#### React Testing Library (Jest for testing)
