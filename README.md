@@ -19,7 +19,36 @@ config:
 ✔ Would you like to customize the import alias (`@/*` by default)? … Yes
 ```
 
-### 2 React Testing Library(RTL)
+### 2 test
+
+#### 1 Unit： vitest + RTL（react test library）
+
+```shell
+# npm
+## 核心
+vitest
+jsdom
+
+## 测试套装
+@test-library/react
+@test-library/jestdom
+@test-library/user-event
+
+## 其他
+@vitejs/plugin-react-swc
+@vitest/coverage-v8
+
+# 配置文件
+vitest.config.ts
+vitest.setup.ts => 扩充expect断言
+tsconfig.json => describe/it/expect/不会报错
+
+# scripts 脚本
+    "test": "vitest run",
+    "test:watch": "vitest",
+
+
+```
 
 ### 3 ESLint + Prettier + scripts
 
