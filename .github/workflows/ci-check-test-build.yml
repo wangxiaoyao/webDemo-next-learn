@@ -44,6 +44,8 @@ jobs:
     strategy:
       matrix:
         node: [18.x, 20.x, 22.x]
+    env:
+      CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
     steps:
       - uses: actions/checkout@v4
@@ -55,9 +57,10 @@ jobs:
       - run: npm run test:ci # Vitest/Jest with cobertura or lcov
       - name: Upload coverage
         if: success() && env.CODECOV_TOKEN != ''
-        uses: codecov/codecov-action@v4
+        uses: codecov/codecov-action@v5
         with:
-          token: ${{ secrets.CODECOV_TOKEN }}
+          token: ${{ env.CODECOV_TOKEN }}
+          slug: wangxiaoyao/webDemo-next-learn
 
   #######################################################################
   # 3) Build (only latest Node, waits for everything else)
