@@ -1,6 +1,6 @@
 import { screen, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import ButtonVitest from './index';
+import ButtonVitest from '../index';
 
 describe('<ButtonVitest>', () => {
   it('点击时触发 onClick', async () => {

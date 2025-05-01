@@ -21,7 +21,16 @@ config:
 
 ### 2 test
 
-#### 1 Unit： vitest + RTL（react test library）
+> E2E 暂时不做！这里仅仅做“unit test”：单元测试
+
+#### Unit： vitest + RTL（react test library）
+
+目的：
+
+1. **组件：测交互行为**
+2. **Hook/函数：测输入输出**
+3. **页面结构：测文本是否存在**
+4. **状态管理：测 getter/setter 是否响应**
 
 ```shell
 # npm
@@ -44,9 +53,12 @@ vitest.setup.ts => 扩充expect断言
 tsconfig.json => describe/it/expect/不会报错
 
 # scripts 脚本
-    "test": "vitest run",
+	  "test": "vitest run",
     "test:watch": "vitest",
+    "test:ci": "vitest run --coverage",
 
+分别将: test脚本放入lint-staged,  test:ci 放入XXX.yml
+test:watch 用于本地的执行和监控
 
 ```
 
@@ -233,12 +245,9 @@ webDemo-next-learn/										# 文件夹统一使用：kebab-case
     │   ├── page.js                   # Root page
     │   └── dashboard/                # route即url。短：全部小写，长：kebab-case	egg：/user-settings
     │       ├── layout.js
-    │       └── page.js               # 默认页面导出：Page命名。如下
-    │       └── components						 # 文件夹
-    │           └── DashboardStatus.js # 组件命名：不论是组件文件夹名还是文件名都是：大驼峰（PascalCase）非nextjs框架，页面级同此且使用index.tsx
-                                       # DashboardStatus文件夹（当有内嵌子组件）
-                                        /index.js
-                                        /DashboardStatus.module.css																										              						/Other.js 子组件
+    │       └── page.js               # 默认页面导出：Page命名。
+    │       └── components
+    │           └── DashboardStatus   # 组件命名：PascalCase文件夹+index.tsx文件名
     ├── components/                   # Reusable components
     │   ├── ui/                       # UI-specific components (Button, Modal, Card...)
     │   └── shared/                   # Shared components across features
@@ -274,7 +283,7 @@ webDemo-next-learn/										# 文件夹统一使用：kebab-case
 
 ```shell
 # 补充
-## 路由页面统一使用：Page 命名。
+## 但凡组件,统一使用：PascalCase文件夹 + index.tsx + __test__(单测)。 其他则统一不使用文件夹进行包裹路由页面统一使用：Page 命名。
 export default function Page() {
     return (
         <div>
@@ -282,6 +291,7 @@ export default function Page() {
         </div>
     )
 }
+
 
 ## constants
 ├── api.ts           # API endpoints

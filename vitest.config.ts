@@ -14,7 +14,7 @@ export default defineConfig({
     setupFiles: './vitest.setup.ts',
     coverage: {
       provider: 'v8',
-      reporter: ['text', 'lcov'],
+      reporter: ['text', 'lcov', 'text-summary'],
     },
   },
   // 可选：给 @/ alias

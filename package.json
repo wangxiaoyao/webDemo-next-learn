@@ -9,6 +9,7 @@
     "start": "next start",
     "test": "vitest run",
     "test:watch": "vitest",
+    "test:ci": "vitest run --coverage",
     "format": "prettier --write .",
     "lint": "eslint --fix --max-warnings=0 --no-ignore",
     "lint:next": "next lint --fix --max-warnings=0 --no-ignore",
@@ -20,7 +21,8 @@
   "lint-staged": {
     "*.{js,ts,jsx,tsx}": [
       "npm run format --",
-      "npm run lint --"
+      "npm run lint --",
+      "npm run test"
     ],
     "*.{css,md,json,html,yml}": [
       "npm run format --"
