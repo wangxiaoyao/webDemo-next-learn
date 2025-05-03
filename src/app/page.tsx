@@ -29,7 +29,9 @@ export default function Home() {
         <h1 className="bg-gradient-to-b from-neutral-50 to-neutral-400 bg-clip-text text-center text-3xl font-bold text-transparent md:text-7xl lg:text-9xl">
           Welcome
         </h1>
-        <p className="cursor-default text-center text-neutral-300">xiaoyao&apos;s web demo</p>
+        <p className="cursor-default text-center text-neutral-300">
+          xiaoyao&apos;s web demo --loving xingxing!
+        </p>
       </div>
     </div>
   );

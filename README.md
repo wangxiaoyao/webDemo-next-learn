@@ -163,19 +163,19 @@ npx --no -- commitlint --edit "$1"
 | **body**    | 可选：阐述动机、对比前后行为                    | 多行文本，换行宽度 ≤ 72                                                                                                                                                                                             |
 | **footer**  | 关闭 issue / 破坏性变更说明                     | `BREAKING CHANGE:` 或 `Closes #123`                                                                                                                                                                                 |
 
-| 类型       | 典型场景                      | 例子                           |
-| ---------- | ----------------------------- | ------------------------------ |
-| `feat`     | 新增用户可以直接看到的新功能  | 新增 dark mode                 |
-| `fix`      | 修复 bug                      | 修复 token 失效问题            |
-| `docs`     | 改文档内容                    | 更新 README.md                 |
-| `style`    | 调整代码格式/排版，不影响功能 | 调整缩进、改引号               |
-| `refactor` | 重构现有代码逻辑，不加新功能  | 优化 hooks 构造器              |
-| `perf`     | 提升性能                      | 加快页面渲染速度               |
-| `test`     | 添加或修改测试用例            | 新增 login 测试                |
-| `build`    | 构建系统/打包工具变更         | 升级 Webpack 配置              |
-| `ci`       | CI/CD 配置更新                | 改 GitHub Actions 流程         |
-| `chore`    | 杂项/维护性修改               | 修改 Husky、更新脚本、升级依赖 |
-| `revert`   | 回滚之前的提交                | 回滚 "feat: 新增支付功能"      |
+| 类型       | 典型场景                      | 例子                                 |
+| ---------- | ----------------------------- | ------------------------------------ |
+| `feat`     | 新增用户可以直接看到的新功能  | 新增 dark mode                       |
+| `fix`      | 修复 bug                      | 修复 token 失效问题                  |
+| `docs`     | 改文档内容                    | 更新 README.md                       |
+| `style`    | 调整代码格式/排版，不影响功能 | 调整缩进、改引号                     |
+| `refactor` | 重构现有代码逻辑，不加新功能  | 优化 hooks 构造器                    |
+| `perf`     | 提升性能                      | 加快页面渲染速度                     |
+| `test`     | 添加或修改测试用例            | 新增 login 测试                      |
+| `build`    | 构建系统/打包工具变更         | 升级 Webpack 配置                    |
+| `ci`       | CI/CD 配置更新                | 改 GitHub Actions 流程               |
+| `chore`    | 杂项/维护性修改               | 修改 Husky、更新脚本、升级依赖(deps) |
+| `revert`   | 回滚之前的提交                | 回滚 "feat: 新增支付功能"            |
 
 ### 5 github workflows (.github/workflows/XXX.yml)：GitHub action=》code quality
 
@@ -328,4 +328,28 @@ src/
       "@constants/*": [
         "./src/constants/*"
       ]
+```
+
+## 二 upgrade
+
+```shell
+## 基于package.json（可安装版本） / package-lock.json（实际安装的版本）
+## 注意：删除package-lock.json + node_module 会导致重新安装package.json允许的新版本（semver允许版本）。引发所有人升级库更新。（新建分支）
+规则为：
+^: major不变
+~: minor不变
+
+npm update
+
+
+## 基于npm上最新版本
+### 罗列：后者信息更全
+npm outdated --all  或者 npx npm-check -u
+
+## 改写package.json。
+### --target minor  --target patch  默认升级major
+npx npm-check-updates -u
+
+## 安全漏洞
+npm audit
 ```
