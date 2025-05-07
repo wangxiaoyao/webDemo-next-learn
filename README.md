@@ -57,9 +57,10 @@ tsconfig.json => describe/it/expect/不会报错
     "test:watch": "vitest",
     "test:ci": "vitest run --coverage",
 
-分别将: test脚本放入lint-staged,  test:ci 放入XXX.yml
+分别将:
+test脚本放入lint-staged,
+test:ci 放入XXX.yml
 test:watch 用于本地的执行和监控
-
 ```
 
 ### 3 ESLint + Prettier + scripts
@@ -236,7 +237,7 @@ all-branches-rules
 ### 8 project structure
 
 ```shell
-webDemo-next-learn/										# 文件夹统一使用：kebab-case
+webdemo-next-learn/										# 文件夹统一使用：kebab-case  vercel也要求项目全部小写
 ├── src/                              # Static assets (images, fonts)
     ├── app/                          # Routing (app directory for App Router)
     │   ├── api
@@ -247,7 +248,7 @@ webDemo-next-learn/										# 文件夹统一使用：kebab-case
     │       ├── layout.js
     │       └── page.js               # 默认页面导出：Page命名。
     │       └── components
-    │           └── DashboardStatus   # 组件命名：PascalCase文件夹+index.tsx文件名
+    │           └── DashboardStatus   # 组件命名：PascalCase文件夹 + index.tsx文件名
     ├── components/                   # Reusable components
     │   ├── ui/                       # UI-specific components (Button, Modal, Card...)
     │   └── shared/                   # Shared components across features
@@ -300,15 +301,6 @@ export default function Page() {
 ├── roles.ts         # 用户角色权限定义
 ├── index.ts         # 统一导出
 
-
-## i18n
-src/
-└── locales/
-    ├── en/
-    │   └── common.json
-    └── zh/
-        └── common.json
-
 ## tsconfig.json配置路径
       "@components/*": [
         "./src/components/*"
@@ -330,7 +322,9 @@ src/
       ]
 ```
 
-## 二 upgrade
+### 9 upgrade
+
+#### npm
 
 ```shell
 ## 基于package.json（可安装版本） / package-lock.json（实际安装的版本）
@@ -352,4 +346,82 @@ npx npm-check-updates -u
 
 ## 安全漏洞
 npm audit
+```
+
+#### yml action
+
+可以通过github marketplace 查看最新版本。
+
+## 二 Implementation
+
+### 1 i18n
+
+```shell
+src/
+└── locales/
+    ├── en/
+    │   └── common.json
+    └── zh/
+        └── common.json
+```
+
+### 2 theme style（V4）
+
+```shell
+## 1 define “variant”（Tailwind V4）
+### 第一个参数：变体名（dark）语法糖前缀: "hover:" "dark:bg-red-500"
+### 第二个参数：选择器模板：触发的作用条件。当父元素存在dark类
+@custom-variant dark (&:is(.dark *))
+
+eg:<div class="dark:bg-red-500">…</div>
+=> tailwind编译为： .dark\:bg-red-500 { background-color: #ef4444 /* red‑500 */ }
+=> & 换成上面的 .dark\:bg-red-500。
+=> 则：.dark\:bg-red-500:is(.dark *) 表示 1 必须父元素存在dark类 2 自身有“dark:”前缀才生效.
+
+## 2 define tokens using css variables
+@theme inline{
+	--color-mycolor: var(--mycolor)
+}
+:root {
+  --mycolor: oklch(1 0 0);
+.dark{
+	--mycolor: oklch(0.129 0.042 264.695);
+}
+
+1 --color-“token” 这是tailwind的命名空间。除了特定的color表示颜色，还有radius，size 等
+2 mycolor 是自定义的token名。注册给tailwind(token名会被覆盖)。tailwind会自动解析生成对应的utility class。如：“bg-mycolor” 。
+3 最终运行由--mycolor颜色决定。而--mycolor 由变量决定。
+4 也可以这样使用：bg-[--color-mycolor]，--：前缀表示自定义属性。
+5 inline：“变量声明 和 token 注册 放在同一段代码里”。selector：当token很多，或形成独立文件使用。与Tailwind v3 的 theme.extend 不同。V4将token注册和utility解耦
+
+<div className="bg-mycolor h-10 w-10 border"></div>
+
+.bg-mycolor => background-color: var(--color-mycolor) => background-color: var(--mycolor)
+
+
+## 3 给html添加父类：class => 浏览器触发 RecalcStyle => class优先级高于:root的div => 替换掉:root中的对应的token名，从新渲染。（重绘而不需要重排）
+document.documentElement.classlist.add('dark');
+
+## 4 通过 @apply 将bg-background text-foreground 放入body中。这样确定：background，foreground 的token名（换肤的基础），这也就是为什么body中出现color: var(--foreground);
+@layer base{
+	body{
+		@apply bg-background text-foreground
+	}
+	h1{...}
+}
+
+### utility class的聚集
+@layer components{
+	.myBtn{
+		@apply inline-flex items-center gap-2
+	}
+}
+
+### 原子级别
+@layer utilities {
+  .bg-mybrand { background-color: var(--color-primary); }
+}
+
+1 三个维度：base(用于全局基础设置) components(组件层) utilities(原子类)。 优先级也是从低到高（会覆盖）
+
 ```
