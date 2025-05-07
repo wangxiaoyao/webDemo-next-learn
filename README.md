@@ -365,9 +365,17 @@ src/
         └── common.json
 ```
 
-### 2 theme style（V4）
+### 2 tailwind（V4） theme style
+
+> 推荐使用next-themes的npm包。next‑themes 会在服务端插入一段行内脚本，把 `.dark` 或 `.light` 类**在 HTML 发送给浏览器之前**就写好，彻底杜绝闪烁和水合不匹配。更好的解决首帧“闪烁”的问题。因为在 HTML 发送到浏览器之前就确定好主题而不仅靠 `useEffect`。
 
 ```shell
+@import "tailwindcss"
+1 Preflight：现代化 CSS reset 进行初始化，让不同的浏览器处于同一基准。
+2 tailwind 默认的所有utility class + variant（自带的变体 hover: sm: md:） 注入 @layer utilities中。 除非自己显示声明来覆盖。
+
+问题：默认值 比如 p-2。 tailwind 默认对应为（value x 4） 2 => 8px. 生成代码为：  padding: 0.5rem。 其中0.5= 8px/16px
+
 ## 1 define “variant”（Tailwind V4）
 ### 第一个参数：变体名（dark）语法糖前缀: "hover:" "dark:bg-red-500"
 ### 第二个参数：选择器模板：触发的作用条件。当父元素存在dark类
@@ -391,12 +399,19 @@ eg:<div class="dark:bg-red-500">…</div>
 1 --color-“token” 这是tailwind的命名空间。除了特定的color表示颜色，还有radius，size 等
 2 mycolor 是自定义的token名。注册给tailwind(token名会被覆盖)。tailwind会自动解析生成对应的utility class。如：“bg-mycolor” 。
 3 最终运行由--mycolor颜色决定。而--mycolor 由变量决定。
-4 也可以这样使用：bg-[--color-mycolor]，--：前缀表示自定义属性。
-5 inline：“变量声明 和 token 注册 放在同一段代码里”。selector：当token很多，或形成独立文件使用。与Tailwind v3 的 theme.extend 不同。V4将token注册和utility解耦
 
 <div className="bg-mycolor h-10 w-10 border"></div>
 
 .bg-mycolor => background-color: var(--color-mycolor) => background-color: var(--mycolor)
+
+4 官网事例中：p-(<custom-property>) => padding: var(<custom-property>):
+- bg-mycolor 推荐。由tailwind 自动生成 token
+- bg-[var(--color-mycolor)]
+- bg-[var(--mycolor)]: 没有经过token中转
+
+--：前缀表示自定义属性。css要求任何自定义属性都需要var进行包裹。 所以 bg-[--color-mycolor] 错误
+
+5 inline：“变量声明 和 token 注册 放在同一段代码里”。selector：当token很多，或形成独立文件使用。与Tailwind v3 的 theme.extend 不同。V4将token注册和utility解耦
 
 
 ## 3 给html添加父类：class => 浏览器触发 RecalcStyle => class优先级高于:root的div => 替换掉:root中的对应的token名，从新渲染。（重绘而不需要重排）
