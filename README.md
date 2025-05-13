@@ -239,6 +239,14 @@ all-branches-rules
 
 ### 8 project structure
 
+> Demo 命名规范
+>
+> 1 style 类： taiwind-“theme”
+>
+> 2 react 类：react-“theme”
+>
+> 3 app类：app-“theme”-demo : 完整功能性页面
+
 ```shell
 webdemo-next-learn/										# 文件夹统一使用：kebab-case  vercel也要求项目全部小写
 ├── src/                              # Static assets (images, fonts)
